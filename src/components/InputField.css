@@ -1,0 +1,111 @@
+.input-field {
+  display: flex;
+  gap: 1rem;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.input-field-input {
+  flex: 1;
+  padding: 1.25rem 1.5rem;
+  font-size: 1.5rem;
+  border: 3px solid #e2e8f0;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 600;
+  color: #1e293b;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.input-field-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.input-field-input::-webkit-inner-spin-button,
+.input-field-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-field-input:disabled {
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input-field-button {
+  padding: 1.25rem 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.input-field-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.input-field-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.input-field-button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .input-field {
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 100%;
+  }
+  
+  .input-field-input {
+    font-size: 1.125rem;
+    padding: 1rem 1.25rem;
+    min-height: 52px;
+    border-width: 2px;
+  }
+  
+  .input-field-button {
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+    min-height: 52px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .input-field {
+    gap: 0.625rem;
+  }
+  
+  .input-field-input {
+    font-size: 1rem;
+    padding: 0.875rem 1rem;
+    min-height: 48px;
+  }
+  
+  .input-field-button {
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+    min-height: 48px;
+  }
+}
+

@@ -1,0 +1,84 @@
+.feedback {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  z-index: 1000;
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.feedback-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.feedback-correct {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  color: white;
+}
+
+.feedback-incorrect {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+  color: white;
+}
+
+.feedback-icon {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  animation: bounce 0.5s ease;
+}
+
+.feedback-message {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .feedback {
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    max-width: 90%;
+  }
+  
+  .feedback-icon {
+    font-size: 3rem;
+  }
+  
+  .feedback-message {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .feedback {
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    max-width: 85%;
+  }
+  
+  .feedback-icon {
+    font-size: 2.5rem;
+  }
+  
+  .feedback-message {
+    font-size: 1.125rem;
+  }
+}
+
