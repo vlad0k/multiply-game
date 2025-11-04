@@ -9,6 +9,7 @@ export function LanguageSelector() {
 
   const languages = [
     { code: 'ru', name: 'Русский' },
+    { code: 'uk', name: 'Українська' },
     { code: 'en', name: 'English' },
     { code: 'no', name: 'Norsk' }
   ];

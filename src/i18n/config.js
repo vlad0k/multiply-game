@@ -5,6 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import translationRU from './locales/ru.json';
 import translationEN from './locales/en.json';
 import translationNO from './locales/no.json';
+import translationUK from './locales/uk.json';
 
 const resources = {
   ru: {
@@ -15,6 +16,9 @@ const resources = {
   },
   no: {
     translation: translationNO
+  },
+  uk: {
+    translation: translationUK
   }
 };
 
@@ -24,7 +28,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'ru',
-    supportedLngs: ['ru', 'en', 'no'],
+    supportedLngs: ['ru', 'en', 'no', 'uk'],
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
