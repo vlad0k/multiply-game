@@ -13,10 +13,10 @@ import './styles/App.css';
 function App() {
   const { t, i18n } = useTranslation();
   
-  // Обновление meta тегов при изменении языка
+  // Обновление meta тегов и манифеста PWA при изменении языка
   useEffect(() => {
     const language = i18n.language;
-    const langCode = language.split('-')[0]; // Получаем базовый код языка (ru, en, no)
+    const langCode = language.split('-')[0]; // Получаем базовый код языка (ru, en, no, uk)
     
     // Обновляем атрибут lang в HTML элементе
     document.documentElement.lang = langCode;
@@ -50,6 +50,83 @@ function App() {
       document.head.appendChild(metaAppName);
     }
     metaAppName.setAttribute('content', t('appName'));
+    
+    // Обновляем манифест PWA
+    const manifestLink = document.querySelector('link[rel="manifest"]');
+    if (manifestLink) {
+      // Сохраняем старый Blob URL для освобождения памяти
+      const oldUrl = manifestLink.href.startsWith('blob:') ? manifestLink.href : null;
+      
+      // Загружаем текущий манифест и обновляем его
+      fetch(manifestLink.href)
+        .then(response => response.json())
+        .then(manifest => {
+          // Обновляем локализованные поля манифеста
+          manifest.name = t('pageTitle');
+          manifest.short_name = t('appName');
+          manifest.description = t('metaDescription');
+          
+          // Создаем новый Blob URL для обновленного манифеста
+          const manifestBlob = new Blob([JSON.stringify(manifest, null, 2)], {
+            type: 'application/json'
+          });
+          const manifestUrl = URL.createObjectURL(manifestBlob);
+          
+          // Освобождаем старый Blob URL, если он был
+          if (oldUrl) {
+            URL.revokeObjectURL(oldUrl);
+          }
+          
+          // Обновляем ссылку на манифест
+          manifestLink.href = manifestUrl;
+        })
+        .catch(err => {
+          // Если манифест не загружается, создаем новый с базовыми значениями
+          const baseManifest = {
+            name: t('pageTitle'),
+            short_name: t('appName'),
+            description: t('metaDescription'),
+            theme_color: '#667eea',
+            background_color: '#667eea',
+            display: 'standalone',
+            orientation: 'portrait',
+            scope: '/multiply-game/',
+            start_url: '/multiply-game/',
+            icons: [
+              {
+                src: 'pwa-192x192.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'any'
+              },
+              {
+                src: 'pwa-512x512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'any'
+              },
+              {
+                src: 'pwa-512x512-maskable.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'maskable'
+              }
+            ]
+          };
+          
+          const manifestBlob = new Blob([JSON.stringify(baseManifest, null, 2)], {
+            type: 'application/json'
+          });
+          const manifestUrl = URL.createObjectURL(manifestBlob);
+          
+          // Освобождаем старый Blob URL, если он был
+          if (oldUrl) {
+            URL.revokeObjectURL(oldUrl);
+          }
+          
+          manifestLink.href = manifestUrl;
+        });
+    }
   }, [i18n.language, t]);
   const [selectedCards, setSelectedCards] = useState(null);
   const [selectedNumbers, setSelectedNumbers] = useState([]);

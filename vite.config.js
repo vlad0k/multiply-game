@@ -10,9 +10,9 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       injectRegister: 'auto',
       manifest: {
-        name: 'Таблица умножения',
-        short_name: 'Умножение',
-        description: 'Игра для изучения таблицы умножения',
+        name: 'Multiply Game',
+        short_name: 'Multiply Game',
+        description: 'Game for learning the multiplication table',
         theme_color: '#667eea',
         background_color: '#667eea',
         display: 'standalone',
