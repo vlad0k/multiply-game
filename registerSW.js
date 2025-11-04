@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/multiply-game/sw.js', { scope: '/multiply-game/' })})}
