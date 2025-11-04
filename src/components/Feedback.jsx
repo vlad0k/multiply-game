@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Feedback.css';
 
 /**
@@ -7,6 +8,7 @@ import './Feedback.css';
  * @param {boolean} show - Показывать ли обратную связь
  */
 export function Feedback({ isCorrect, show }) {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export function Feedback({ isCorrect, show }) {
         {isCorrect ? '✓' : '✗'}
       </div>
       <div className="feedback-message">
-        {isCorrect ? 'Правильно! Молодец!' : 'Неверно. Попробуй еще раз!'}
+        {isCorrect ? t('correct') : t('incorrect')}
       </div>
     </div>
   );

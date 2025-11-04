@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './GameCard.css';
 
 /**
@@ -8,6 +9,7 @@ import './GameCard.css';
  * @param {number} totalCards - Общее количество карточек
  */
 export function GameCard({ question, cardIndex, totalCards }) {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export function GameCard({ question, cardIndex, totalCards }) {
   return (
     <div className={`game-card ${isVisible ? 'game-card-visible' : ''}`}>
       <div className="game-card-progress">
-        Карточка {cardIndex + 1} из {totalCards}
+        {t('card')} {cardIndex + 1} {t('of')} {totalCards}
       </div>
       <div className="game-card-question">
         <span className="game-card-number">{question.num1}</span>

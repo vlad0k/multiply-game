@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './InputField.css';
 
 /**
@@ -7,6 +8,7 @@ import './InputField.css';
  * @param {boolean} disabled - Заблокировано ли поле
  */
 export function InputField({ onSubmit, disabled }) {
+  const { t } = useTranslation();
   const [value, setValue] = useState('');
   const inputRef = useRef(null);
 
@@ -41,7 +43,7 @@ export function InputField({ onSubmit, disabled }) {
         className="input-field-input"
         value={value}
         onChange={handleChange}
-        placeholder="Введите ответ"
+        placeholder={t('enterAnswer')}
         disabled={disabled}
         autoFocus
       />
@@ -50,7 +52,7 @@ export function InputField({ onSubmit, disabled }) {
         className="input-field-button"
         disabled={disabled || !value.trim()}
       >
-        Ответить
+        {t('submit')}
       </button>
     </form>
   );

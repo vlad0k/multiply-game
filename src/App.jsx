@@ -1,14 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GameCard } from './components/GameCard';
 import { InputField } from './components/InputField';
 import { Feedback } from './components/Feedback';
 import { Statistics } from './components/Statistics';
 import { ConfirmationDialog } from './components/ConfirmationDialog';
+import { LanguageSelector } from './components/LanguageSelector';
 import { useGameLogic } from './hooks/useGameLogic';
 import { playCorrectSound, playIncorrectSound } from './utils/sounds';
 import './styles/App.css';
 
 function App() {
+  const { t, i18n } = useTranslation();
+  
+  // Обновление meta тегов при изменении языка
+  useEffect(() => {
+    const language = i18n.language;
+    const langCode = language.split('-')[0]; // Получаем базовый код языка (ru, en, no)
+    
+    // Обновляем атрибут lang в HTML элементе
+    document.documentElement.lang = langCode;
+    
+    // Обновляем title
+    document.title = t('pageTitle');
+    
+    // Обновляем meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', t('metaDescription'));
+    
+    // Обновляем apple-mobile-web-app-title
+    let metaAppleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+    if (!metaAppleTitle) {
+      metaAppleTitle = document.createElement('meta');
+      metaAppleTitle.setAttribute('name', 'apple-mobile-web-app-title');
+      document.head.appendChild(metaAppleTitle);
+    }
+    metaAppleTitle.setAttribute('content', t('appName'));
+    
+    // Обновляем application-name
+    let metaAppName = document.querySelector('meta[name="application-name"]');
+    if (!metaAppName) {
+      metaAppName = document.createElement('meta');
+      metaAppName.setAttribute('name', 'application-name');
+      document.head.appendChild(metaAppName);
+    }
+    metaAppName.setAttribute('content', t('appName'));
+  }, [i18n.language, t]);
   const [selectedCards, setSelectedCards] = useState(null);
   const [selectedNumbers, setSelectedNumbers] = useState([]);
   const [showNumbersScreen, setShowNumbersScreen] = useState(true);
@@ -102,11 +144,11 @@ function App() {
 
   const handleStartGame = (cardsCount) => {
     if (selectedNumbers.length === 0) {
-      alert('Пожалуйста, выбери хотя бы одно число!');
+      alert(t('alerts.selectAtLeastOne'));
       return;
     }
     if (cardsCount <= 0) {
-      alert('Количество карточек должно быть больше нуля!');
+      alert(t('alerts.cardsCountZero'));
       return;
     }
     setSelectedCards(cardsCount);
@@ -117,7 +159,7 @@ function App() {
     e.preventDefault();
     const count = parseInt(customCardsCount);
     if (isNaN(count) || count <= 0) {
-      alert('Пожалуйста, введи корректное число (больше нуля)!');
+      alert(t('alerts.invalidNumber'));
       return;
     }
     handleStartGame(count);
@@ -135,24 +177,25 @@ function App() {
   if (showNumbersScreen && selectedCards === null) {
     return (
       <div className="app">
+        <LanguageSelector />
         <div className="start-screen">
-          <h1 className="start-screen-title">Таблица умножения</h1>
-          <p className="start-screen-subtitle">Выбери числа для изучения</p>
-          <p className="start-screen-hint">Будут вопросы вида: выбранное число × 1...10</p>
+          <h1 className="start-screen-title">{t('title')}</h1>
+          <p className="start-screen-subtitle">{t('selectNumbers')}</p>
+          <p className="start-screen-hint">{t('selectNumbersHint')}</p>
           <div className="number-selector-actions">
             <button
               className="number-selector-action-button"
               onClick={handleSelectAll}
               disabled={selectedNumbers.length === 10}
             >
-              Выбрать все
+              {t('selectAll')}
             </button>
             {selectedNumbers.length > 0 && (
               <button
                 className="number-selector-action-button"
                 onClick={handleDeselectAll}
               >
-                Снять все
+                {t('deselectAll')}
               </button>
             )}
           </div>
@@ -169,9 +212,9 @@ function App() {
           </div>
           <div className="selected-numbers-info">
             {selectedNumbers.length > 0 ? (
-              <p>Выбрано: {selectedNumbers.join(', ')}</p>
+              <p>{t('selected')}: {selectedNumbers.join(', ')}</p>
             ) : (
-              <p className="selected-numbers-hint">Выбери хотя бы одно число</p>
+              <p className="selected-numbers-hint">{t('atLeastOneNumber')}</p>
             )}
           </div>
           {selectedNumbers.length > 0 && (
@@ -181,7 +224,7 @@ function App() {
                 setShowNumbersScreen(false);
               }}
             >
-              Продолжить
+              {t('continue')}
             </button>
           )}
         </div>
@@ -193,32 +236,33 @@ function App() {
   if (!showNumbersScreen && selectedNumbers.length > 0 && selectedCards === null) {
     return (
       <div className="app">
+        <LanguageSelector />
         <div className="start-screen">
-          <h1 className="start-screen-title">Таблица умножения</h1>
-          <p className="start-screen-subtitle">Выбрано: {selectedNumbers.join(', ')}</p>
-          <p className="start-screen-subtitle">Выбери количество карточек для игры</p>
+          <h1 className="start-screen-title">{t('title')}</h1>
+          <p className="start-screen-subtitle">{t('selected')}: {selectedNumbers.join(', ')}</p>
+          <p className="start-screen-subtitle">{t('selectCardsCount')}</p>
           <div className="start-screen-options">
             <button
               className="start-screen-button"
               onClick={() => handleStartGame(10)}
             >
-              10 карточек
+              10 {t('cards')}
             </button>
             <button
               className="start-screen-button"
               onClick={() => handleStartGame(20)}
             >
-              20 карточек
+              20 {t('cards')}
             </button>
             <button
               className="start-screen-button"
               onClick={() => handleStartGame(30)}
             >
-              30 карточек
+              30 {t('cards')}
             </button>
           </div>
           <div className="custom-cards-input-wrapper">
-            <p className="custom-cards-label">Или введи свое количество:</p>
+            <p className="custom-cards-label">{t('orEnterCustom')}</p>
             <form className="custom-cards-form" onSubmit={handleCustomCardsSubmit}>
               <input
                 type="text"
@@ -226,14 +270,14 @@ function App() {
                 className="custom-cards-input"
                 value={customCardsCount}
                 onChange={handleCustomCardsChange}
-                placeholder="Введите число"
+                placeholder={t('enterNumber')}
               />
               <button
                 type="submit"
                 className="start-screen-button"
                 disabled={!customCardsCount || parseInt(customCardsCount) <= 0}
               >
-                Начать игру
+                {t('startGame')}
               </button>
             </form>
           </div>
@@ -242,7 +286,7 @@ function App() {
             onClick={() => setShowNumbersScreen(true)}
             style={{ marginTop: '1rem' }}
           >
-            Назад к выбору чисел
+            {t('backToNumbers')}
           </button>
         </div>
       </div>
@@ -253,6 +297,7 @@ function App() {
   if (isGameFinished) {
     return (
       <div className="app">
+        <LanguageSelector />
         <Statistics
           totalCards={totalCards}
           correctAnswers={correctAnswers}
@@ -266,10 +311,11 @@ function App() {
   // Игровой экран
   return (
     <div className="app">
+      <LanguageSelector />
       <button
         className="exit-game-button"
         onClick={handleExitGame}
-        title="Выйти из игры"
+        title={t('exitGame')}
       >
         ✕
       </button>
@@ -295,10 +341,10 @@ function App() {
       <Feedback isCorrect={isCorrect} show={showFeedback} />
       <ConfirmationDialog
         show={showExitDialog}
-        title="Выйти из игры?"
-        message="Твой прогресс будет потерян. Ты уверен, что хочешь выйти?"
-        confirmText="Да, выйти"
-        cancelText="Отмена"
+        title={t('exitConfirmTitle')}
+        message={t('exitConfirmMessage')}
+        confirmText={t('yesExit')}
+        cancelText={t('cancel')}
         onConfirm={handleConfirmExit}
         onCancel={handleCancelExit}
       />
