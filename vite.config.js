@@ -13,8 +13,6 @@ export default defineConfig({
         name: 'Multiply Game',
         short_name: 'Multiply Game',
         description: 'Game for learning the multiplication table',
-        theme_color: '#667eea',
-        background_color: '#667eea',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/multiply-game/',

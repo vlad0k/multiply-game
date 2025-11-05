@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
 import './InputField.css';
 
@@ -7,10 +7,18 @@ import './InputField.css';
  * @param {Function} onSubmit - Функция обработки ответа
  * @param {boolean} disabled - Заблокировано ли поле
  */
-export function InputField({ onSubmit, disabled }) {
+export const InputField = forwardRef(function InputField({ onSubmit, disabled, autoFocus }, ref) {
   const { t } = useTranslation();
   const [value, setValue] = useState('');
   const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  }));
 
   useEffect(() => {
     if (!disabled && inputRef.current) {
@@ -45,7 +53,7 @@ export function InputField({ onSubmit, disabled }) {
         onChange={handleChange}
         placeholder={t('enterAnswer')}
         disabled={disabled}
-        autoFocus
+        autoFocus={autoFocus}
       />
       <button
         type="submit"
@@ -56,5 +64,5 @@ export function InputField({ onSubmit, disabled }) {
       </button>
     </form>
   );
-}
+});
 
